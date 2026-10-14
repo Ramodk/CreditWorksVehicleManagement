@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "4YS9ODDB8FY=",
+  "success": true,
+  "projectFilePath": "/Volumes/Media/Development/CreditWorksVehicleManagement/CreditWorks.Api/CreditWorks.Api.csproj",
+  "expectedPackageFiles": [
+    "/Users/ramodkaushan/.nuget/packages/microsoft.aspnetcore.openapi/10.0.13/microsoft.aspnetcore.openapi.10.0.13.nupkg.sha512",
+    "/Users/ramodkaushan/.nuget/packages/microsoft.openapi/2.12.2/microsoft.openapi.2.12.2.nupkg.sha512"
+  ],
+  "logs": []
+}
