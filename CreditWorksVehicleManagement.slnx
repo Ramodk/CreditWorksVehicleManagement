@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="CreditWorks.Api/CreditWorks.Api.csproj" />
+  <Project Path="CreditWorks.Application/CreditWorks.Application.csproj" />
+  <Project Path="CreditWorks.Domain/CreditWorks.Domain.csproj" />
+  <Project Path="CreditWorks.Infrastructure/CreditWorks.Infrastructure.csproj" />
+  <Project Path="CreditWorks.Tests/CreditWorks.Tests.csproj" />
+</Solution>
+

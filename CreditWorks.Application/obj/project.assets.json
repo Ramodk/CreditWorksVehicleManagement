@@ -1,11 +1,30 @@
 {
   "version": 4,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "CreditWorks.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/CreditWorks.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CreditWorks.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "CreditWorks.Domain/1.0.0": {
+      "type": "project",
+      "path": "../CreditWorks.Domain/CreditWorks.Domain.csproj",
+      "msbuildProject": "../CreditWorks.Domain/CreditWorks.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "CreditWorks.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "/Users/ramodkaushan/.nuget/packages/": {}
@@ -32,7 +51,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Volumes/Media/Development/CreditWorksVehicleManagement/CreditWorks.Domain/CreditWorks.Domain.csproj": {
+              "projectPath": "/Volumes/Media/Development/CreditWorksVehicleManagement/CreditWorks.Domain/CreditWorks.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
