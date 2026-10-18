@@ -35,6 +35,30 @@ public static class VehicleCategoryValidator
             {
                 errors.Add("Category name is required.");
             }
+            else if (category.Name.Trim().Length > 100)
+            {
+                errors.Add(
+                    $"Category name {category.Name} cannot exceed 100 characters.");
+            }
+
+            if (string.IsNullOrWhiteSpace(category.Icon))
+            {
+                errors.Add(
+                    $"An icon is required for {category.Name}.");
+            }
+            else if (!CategoryIcons.IsAllowed(category.Icon))
+            {
+                errors.Add(
+                    $"Icon '{category.Icon}' is not a valid choice for {category.Name}.");
+            }
+
+            if (decimal.Round(category.MinWeight, 2) != category.MinWeight ||
+                (category.MaxWeight.HasValue &&
+                 decimal.Round(category.MaxWeight.Value, 2) != category.MaxWeight.Value))
+            {
+                errors.Add(
+                    $"Weights for {category.Name} cannot have more than two decimal places.");
+            }
 
             if (category.MinWeight < 0m)
             {
@@ -48,6 +72,17 @@ public static class VehicleCategoryValidator
                 errors.Add(
                     $"Invalid weight range for {category.Name}.");
             }
+        }
+
+        var duplicateNames = ordered
+            .Where(c => !string.IsNullOrWhiteSpace(c.Name))
+            .GroupBy(c => c.Name.Trim(), StringComparer.OrdinalIgnoreCase)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key);
+
+        foreach (var name in duplicateNames)
+        {
+            errors.Add($"Category name {name} is used more than once.");
         }
 
         // Check gaps and overlaps.

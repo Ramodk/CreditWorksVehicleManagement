@@ -6,6 +6,12 @@ namespace CreditWorks.Application.Validation;
 
 public static class VehicleValidator
 {
+    // The first petrol car was built in 1886.
+    public const int EarliestYear = 1886;
+
+    // Manufacturers sell next year's models before the year starts.
+    public static int LatestYear => DateTime.UtcNow.Year + 1;
+
     public static List<string> Validate(Vehicle vehicle)
     {
         var errors = new List<string>();
@@ -24,10 +30,12 @@ public static class VehicleValidator
             errors.Add("A manufacturer must be selected.");
         }
 
-        if (vehicle.Year < 1886 ||
-            vehicle.Year > DateTime.UtcNow.Year + 1)
+        if (vehicle.Year < EarliestYear ||
+            vehicle.Year > LatestYear)
         {
-            errors.Add("Manufacturing year is invalid.");
+            errors.Add(
+                $"Year of manufacture must be between " +
+                $"{EarliestYear} and {LatestYear}.");
         }
 
         if (vehicle.Weight <= 0)

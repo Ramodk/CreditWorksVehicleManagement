@@ -16,6 +16,7 @@ public class VehicleCategoryValidatorTests
             {
                 Id = 1,
                 Name = "Light",
+                Icon = "car",
                 MinWeight = 0m,
                 MaxWeight = 500m
             },
@@ -23,6 +24,7 @@ public class VehicleCategoryValidatorTests
             {
                 Id = 2,
                 Name = "Medium",
+                Icon = "truck",
                 MinWeight = 500m,
                 MaxWeight = 2500m
             },
@@ -30,6 +32,7 @@ public class VehicleCategoryValidatorTests
             {
                 Id = 3,
                 Name = "Heavy",
+                Icon = "truck-heavy",
                 MinWeight = 2500m,
                 MaxWeight = null
             }
@@ -96,6 +99,82 @@ public class VehicleCategoryValidatorTests
 
         Assert.NotNull(result);
         Assert.Equal(expectedName, result.Name);
+    }
+
+    [Fact]
+    public void ChangingCategoryRanges_ShouldRecategoriseVehicle()
+    {
+        // Example from the assignment: a 2200 kg vehicle is Medium,
+        // then becomes Heavy when Medium/Heavy move to 2000 kg.
+        var categories = GetValidCategories();
+
+        var before = VehicleCategoryValidator.FindCategory(
+            2200m, categories);
+
+        categories[1].MaxWeight = 2000m;
+        categories[2].MinWeight = 2000m;
+
+        var after = VehicleCategoryValidator.FindCategory(
+            2200m, categories);
+
+        Assert.Equal("Medium", before?.Name);
+        Assert.Equal("Heavy", after?.Name);
+    }
+
+    [Fact]
+    public void MissingIcon_ShouldBeRejected()
+    {
+        var categories = GetValidCategories();
+        categories[0].Icon = "";
+
+        var errors = VehicleCategoryValidator.Validate(categories);
+
+        Assert.Contains(errors, e => e.Contains("icon is required"));
+    }
+
+    [Fact]
+    public void UnknownIcon_ShouldBeRejected()
+    {
+        var categories = GetValidCategories();
+        categories[0].Icon = "spaceship";
+
+        var errors = VehicleCategoryValidator.Validate(categories);
+
+        Assert.Contains(errors, e => e.Contains("not a valid choice"));
+    }
+
+    [Fact]
+    public void DuplicateNames_ShouldBeRejected()
+    {
+        var categories = GetValidCategories();
+        categories[1].Name = "light";
+
+        var errors = VehicleCategoryValidator.Validate(categories);
+
+        Assert.Contains(errors, e => e.Contains("more than once"));
+    }
+
+    [Fact]
+    public void BoundaryWithThreeDecimals_ShouldBeRejected()
+    {
+        var categories = GetValidCategories();
+        categories[0].MaxWeight = 500.001m;
+        categories[1].MinWeight = 500.001m;
+
+        var errors = VehicleCategoryValidator.Validate(categories);
+
+        Assert.Contains(errors, e => e.Contains("two decimal places"));
+    }
+
+    [Fact]
+    public void RemovingMiddleCategory_WithoutClosingGap_ShouldBeRejected()
+    {
+        var categories = GetValidCategories();
+        categories.RemoveAt(1);
+
+        var errors = VehicleCategoryValidator.Validate(categories);
+
+        Assert.Contains(errors, e => e.Contains("Gap"));
     }
 
     [Fact]

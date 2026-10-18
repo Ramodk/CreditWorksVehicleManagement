@@ -86,6 +86,51 @@ public class VehicleValidatorTests
         var errors = VehicleValidator.Validate(vehicle);
 
         Assert.Contains(errors,
-            e => e.Contains("year"));
+            e => e.Contains("Year of manufacture"));
+    }
+
+    [Fact]
+    public void EarliestYear_ShouldBeAccepted()
+    {
+        var vehicle = GetValidVehicle();
+        vehicle.Year = VehicleValidator.EarliestYear;
+
+        var errors = VehicleValidator.Validate(vehicle);
+
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void NextYearModel_ShouldBeAccepted()
+    {
+        var vehicle = GetValidVehicle();
+        vehicle.Year = DateTime.UtcNow.Year + 1;
+
+        var errors = VehicleValidator.Validate(vehicle);
+
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void YearAfterNextYear_ShouldBeRejected()
+    {
+        var vehicle = GetValidVehicle();
+        vehicle.Year = DateTime.UtcNow.Year + 2;
+
+        var errors = VehicleValidator.Validate(vehicle);
+
+        Assert.Contains(errors,
+            e => e.Contains("Year of manufacture"));
+    }
+
+    [Fact]
+    public void WeightWithTwoDecimalPlaces_ShouldBeAccepted()
+    {
+        var vehicle = GetValidVehicle();
+        vehicle.Weight = 1850.75m;
+
+        var errors = VehicleValidator.Validate(vehicle);
+
+        Assert.Empty(errors);
     }
 }
